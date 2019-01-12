@@ -1,8 +1,9 @@
 {
-    "members":[
+    "members": [
         {
-            "name":"horst",
-            "role":"admin" 
+            "name": "horst",
+            "role": "admin"
         }
-    ]
+    ],
+    "locks": []
 }
