@@ -11,8 +11,7 @@ def Hello():
 
 @app.route("/user")
 def users():
-    response="couldn't process your request ;("
-    if len(request.args):
-        response=user.get_user_list()
-    return response
+	response="couldn't process your request ;("
+	response=user.get_user_list()
+	return response
 

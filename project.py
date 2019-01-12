@@ -16,7 +16,7 @@ def list_projects(user="any",role="any"):
 # True if the user has the given role and
 # the role if the user is a member and the given role is any
 def has_role(project,user,role="any"):
-    with open(main.rootfolder+"Projects/"+project+"/project.json") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json",encoding="utf-8") as project_file:
         project_file = json.load(project_file)
         members = project_file["members"]
         for member in members:
@@ -37,7 +37,7 @@ def list_files(project):
 def lock(project,file,user):
     if(not Path(main.rootfolder+"Projects/"+project+"/"+file).is_file()):
         return "Error: File dont Exists"
-    with open(main.rootfolder+"Projects/"+project+"/project.json") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json",encoding="utf-8") as project_file:
         project_conf = json.load(project_file)
         if(check_locked(project,file)):
             if check_locked(project,file,user):
@@ -46,13 +46,13 @@ def lock(project,file,user):
                 return "Error: file Allready Locked"
         project_conf["locks"].append({"file":file,"user":user})
     
-    with open(main.rootfolder+"Projects/"+project+"/project.json","w") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json","w",encoding="utf-8") as project_file:
         json.dump(project_conf,project_file,indent=4)
     return "Success: Locked"
 
 
 def check_locked(project,file,user="any"):
-    with open(main.rootfolder+"Projects/"+project+"/project.json") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json",encoding="utf-8") as project_file:
         project_file = json.load(project_file)
         for lock in project_file["locks"]:
             if lock["file"] == file and (user == "any" or  lock["user"] == user):
@@ -64,27 +64,35 @@ def unlock(project,file,user):
             return "Success: file not Locked"
     if(not check_locked(project,file,user)):
         return "Error: File not Locked by "+user
-    with open(main.rootfolder+"Projects/"+project+"/project.json") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json",encoding="utf-8") as project_file:
         project_conf = json.load(project_file)
        
         if(check_locked(project,file,user)):
             project_conf["locks"].remove({"file":file,"user":user})
 
-    with open(main.rootfolder+"Projects/"+project+"/project.json","w") as project_file:
+    with open(main.rootfolder+"Projects/"+project+"/project.json","w",encoding="utf-8") as project_file:
         json.dump(project_conf,project_file,indent=4)
     return "Success: Unlocked"
 
 def setFile(project,file,user,content):
+    if not check_locked(project,file,user):
+        return "Error: File not locked"
+    with open(main.rootfolder+"Projects/"+file,"x",encoding="utf-8") as file_content:
+        file_content.write(content)
+
+
+def get_file(project,file,user):
+    with open(main.rootfolder+"Projects/"+file,"x",encoding="utf-8") as file_content:
+        return file_content.read()
+
+def add_file(project,file,user):
     pass
 
-def getFile(project,file,user):
+def remove_file(project,file,user):
     pass
 
-def addFile(project,file,user):
+def rename_file(project,file,user,new_file_name):
     pass
 
-def removeFile(project,file,user):
-    pass
-
-def renameFile(project,file,user,new_file_name):
+def File_exists(project,file,user):
     pass
