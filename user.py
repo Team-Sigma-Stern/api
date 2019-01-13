@@ -36,7 +36,7 @@ def login(user,password):
     for usr in get_user_list(False):
         if usr["name"] == user:
             if usr["password"] == hashlib.sha256(password.encode("utf-8")).hexdigest():
-                new_token = {"user":user,"expires":(datetime.datetime.utcnow()+datetime.timedelta(minutes=20)).timestamp()}
+                new_token = {"user":user,"expires":(datetime.datetime.utcnow()+datetime.timedelta(minutes=20000)).timestamp()}
                 auth_tokens.append(new_token)
                 return new_token
 

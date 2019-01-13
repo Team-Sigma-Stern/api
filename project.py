@@ -31,6 +31,10 @@ def has_role(project,user,role="any"):
 def list_files(project):
     files = os.listdir(main.rootfolder+"Projects/"+project)
     for file in files:
+        if Path(main.rootfolder+"Projects/"+project+"/"+file).is_dir():
+            files.remove(file)
+            for sub in os.listdir(main.rootfolder+"Projects/"+project+"/"+file):
+                files.append(file+"/"+sub)
         if file == "project.json":
             files.remove(file)
     return files
@@ -83,8 +87,11 @@ def setFile(project,file,user,content):
 
 
 def get_file(project,file,user):
-    with open(main.rootfolder+"Projects/"+file,"x",encoding="utf-8") as file_content:
-        return file_content.read()
+    if "../" in file:
+        return None
+    with open(main.rootfolder+"Projects/"+project+"/"+file,"r",encoding="utf-8") as file_content:
+        text = file_content.read()
+        return text
 
 def add_file(project,file,user):
     pass

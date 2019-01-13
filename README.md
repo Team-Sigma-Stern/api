@@ -19,7 +19,7 @@ This is the Backend of the online Texteditor
 `/projects/<project name>`<br>
 `/projects/<project name>/files` **GET**: List Files <br>
 `/projects/<project name>/files/<file name>` **GET**: Gets the content of `<file name>` **POST**: Sets the content of `<file name>` <br>
-`/projects/<project name>/files/<file name>/lock` **GET**: Is the file locked **POST**: Locks the file <br>
+`/projects/<project name>/files/<file name>/lock` **GET**: Is the file locked response:`{"locked":"You | Other | No "}`  **POST**: Locks the file <br>
 `/projects/<project name>/files/<file name>/unlock` **POST**: unlocks the file
 
 ### Header
@@ -45,6 +45,11 @@ Will be the response if an Error occured
 `{`<br>
 `"message":".."` should be shown to the user<br>
 `}`
+
+## Roles
+**admin** can change project <br>
+**user** can change files <br>
+**guest** can view files
 
 
 
