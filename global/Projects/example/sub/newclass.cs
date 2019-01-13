@@ -1,7 +1,1 @@
-namespace example.sub
-{
-    public class newclass
-    {
-        
-    }
-}
+"""\"\\\"\\\\\\\"namespace example.sub\\\\\\\\n{\\\\\\\\n    public class newclass\\\\\\\\n    {\\\\\\\\n        \\\\\\\\n    }\\\\\\\\n}\\\\\\\"\\\"\""""

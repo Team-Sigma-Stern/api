@@ -3,7 +3,20 @@
         {
             "name": "horst",
             "role": "admin"
+        },
+        {
+            "name": "horst2",
+            "role": "user"
         }
     ],
-    "locks": []
+    "locks": [
+        {
+            "file": "do_things.cs",
+            "user": "horst2"
+        },
+        {
+            "file": "sub/sub/newinterface.cs",
+            "user": "horst2"
+        }
+    ]
 }

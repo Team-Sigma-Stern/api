@@ -37,6 +37,7 @@ def list_files(project):
                 files.append(file+"/"+sub)
         if file == "project.json":
             files.remove(file)
+        
     return files
 
 def lock(project,file,user):
@@ -82,7 +83,7 @@ def unlock(project,file,user):
 def setFile(project,file,user,content):
     if not check_locked(project,file,user):
         return "Error: File not locked"
-    with open(main.rootfolder+"Projects/"+file,"x",encoding="utf-8") as file_content:
+    with open(main.rootfolder+"Projects/"+project+"/"+file,"w",encoding="utf-8") as file_content:
         file_content.write(content)
 
 
@@ -93,8 +94,6 @@ def get_file(project,file,user):
         text = file_content.read()
         return text
 
-def add_file(project,file,user):
-    pass
 
 def remove_file(project,file,user):
     pass
@@ -103,4 +102,4 @@ def rename_file(project,file,user,new_file_name):
     pass
 
 def File_exists(project,file,user):
-    pass
+    return Path(main.rootfolder+project+"/"+file).exists()

@@ -2,6 +2,7 @@ from flask import Flask,request
 from flask_cors import CORS
 import user,project
 import json
+import urllib
 
 rootfolder="./global/"
 app = Flask(__name__)
@@ -37,8 +38,10 @@ def logout():
 
 @app.route("/projects")
 def projects():
-	
-	return str(project.list_projects()),200,{"Content-Type":"application/json"}
+	user = get_user(request)
+	if user == None:
+		return error_response("No token provided or token expired",401)
+	return str(project.list_projects(user)),200,{"Content-Type":"application/json"}
 
 @app.route("/projects/<project_name>/files",methods=["GET"])
 def project_files(project_name):
@@ -54,25 +57,31 @@ def project_files(project_name):
 
 @app.route("/projects/<project_name>/files/<file_name>",methods=["POST","GET"])
 def file(project_name,file_name):
+	file_name= urllib.parse.unquote(file_name)
 	user = get_user(request)
 	if not project.has_role(project_name,user):
 		return error_response("You dont have access here",404)
 	if user == None:
 		return error_response("You need to be logged in",401)
+	if "project.json" in file_name:
+		return error_response("You cant access the project.json directly",403) 
 	if request.method == "GET":
 		return project.get_file(project_name,file_name,user), 200, {"Content-Type":"plain/text"}
 	if request.method == "POST":
+		print(request.data)
 		if project.has_role(project_name,user,"guest"):
 			return error_response("You are not allowed to write",400)
-		if not project.check_locked(project_name,file_name,user):
+		if not project.check_locked(project_name,file_name,user) and project.File_exists(project_name,file_name,user):
 			if project.check_locked(project_name,file_name):
 				return error_response("The File is locked by someone else",403)
 			else:
 				return error_response("You need to lock the file first",403)
-		project.setFile(project_name,file_name,user,request.data)
+		project.setFile(project_name,file_name,user,request.data.decode("unicode_escape")[1:-1])
+		return "",201
 
 @app.route("/projects/<project_name>/files/<file_name>/lock",methods=["POST","GET"])
 def lock(project_name,file_name):
+	file_name= urllib.parse.unquote(file_name)
 	user = get_user(request)
 	if not project.has_role(project_name,user):
 		return error_response("You dont have access here",404)
@@ -93,6 +102,7 @@ def lock(project_name,file_name):
 
 @app.route("/projects/<project_name>/files/<file_name>/unlock",methods=["POST"])
 def unlock(project_name,file_name):
+	file_name= urllib.parse.unquote(file_name)
 	user = get_user(request)
 	if not project.has_role(project_name,user):
 		return error_response("You dont have access here",404)
@@ -100,7 +110,7 @@ def unlock(project_name,file_name):
 		return error_response("You need to be logged in",401)
 	if project.check_locked(project_name,file_name,user):
 		project.unlock(project_name,file_name,user)
-		return "",2001
+		return "",201
 	else:
 		return error_response("File Locked by other User",400)
 
