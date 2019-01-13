@@ -27,15 +27,16 @@ This is the Backend of the online Texteditor
 
 ### Codes
 http codes used by the API
-| Code | Case                                                                     | Response |
-| ---- | ------------------------------------------------------------------------ | -------- |
-| 200  | Get Succesfull                                                           | standard |
-| 201  | POST Succesfull                                                          | standard |
-| 204  | Get Request to /                                                         | none     |
-| 401  | No auth-token provided and request forbbiden for public or token expired | none     |
-| 403  | The file, the client tryed ti write to, was not locked                   | none     |
-| 404  | Resources not existing or The authentified user has no acces rights      | none     |
-| 501  | This feature is not implemented, but will be                             | none     |
+| Code | Case                                                                     | Response       |
+| ---- | ------------------------------------------------------------------------ | -------------- |
+| 200  | Get Succesfull                                                           | standard       |
+| 201  | POST Succesfull                                                          | standard       |
+| 204  | Get Request to /                                                         | none           |
+| 400  | User Request couldnt processed successfully                              | Error response |
+| 401  | No auth-token provided and request forbbiden for public or token expired | none           |
+| 403  | The file, the client tryed ti write to, was not locked                   | none           |
+| 404  | Resources not existing or The authentified user has no acces rights      | none           |
+| 501  | This feature is not implemented, but will be                             | none           |
 
 ###Error response
 

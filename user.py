@@ -1,6 +1,7 @@
 import main
 import json
 import datetime
+import hashlib
 auth_tokens=[]
 
 def get_user_list(secure=True):
@@ -8,7 +9,7 @@ def get_user_list(secure=True):
     if secure:
         for user in users:
             user.pop("password")
-    return str(users)
+    return users
 
 def create_user(name,displayname="",password=""):
     with open(main.rootfolder+"users.json","r",encoding="utf-8") as user_file:
@@ -32,9 +33,12 @@ def create_user(name,displayname="",password=""):
         return "Success: User "+ displayname +" created"
 
 def login(user,password):
-    new_token = {"user":user,"expires": (datetime.datetime.utcnow()+datetime.timedelta(minutes=5)).timestamp()}
-    auth_tokens.append(new_token)
-    return new_token
+    for usr in get_user_list(False):
+        if usr["name"] == user:
+            if usr["password"] == hashlib.sha256(password.encode("utf-8")).hexdigest():
+                new_token = {"user":user,"expires":(datetime.datetime.utcnow()+datetime.timedelta(minutes=20)).timestamp()}
+                auth_tokens.append(new_token)
+                return new_token
 
 def logout(auth_token):
     for token in auth_tokens:
@@ -43,6 +47,8 @@ def logout(auth_token):
 
 
 def authenticated(auth_token):
+    if auth_token == None:
+        return False
     remove_invalid_tokens()
     for token in auth_tokens:
         print(token)
