@@ -82,7 +82,7 @@ def unlock(project,file,user):
     return "Success: Unlocked"
 
 def setFile(project,file,user,content):
-    if not check_locked(project,file,user):
+    if not check_locked(project,file,user) and File_exists(project,file,user):
         return "Error: File not locked"
     with open(main.rootfolder+"Projects/"+project+"/"+file,"w",encoding="utf-8") as file_content:
         file_content.write(content)
@@ -97,6 +97,8 @@ def get_file(project,file,user):
 
 
 def remove_file(project,file,user):
+    os.remove(main.rootfolder+"Projects/"+project+"/"+file)
+    unlock(project,file,user)
     pass
 
 def rename_file(project,file,user,new_file_name):

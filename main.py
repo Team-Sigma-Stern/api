@@ -76,9 +76,13 @@ def file(project_name,file_name):
 				return error_response("The File is locked by someone else",403)
 			else:
 				return error_response("You need to lock the file first",403)
-		#if request
-		project.setFile(project_name,file_name,user,request.data.decode("unicode_escape")[1:-1])
-		return "",201
+		if request.method == "POST":
+			project.setFile(project_name,file_name,user,request.data.decode("unicode_escape")[1:-1])
+			return "",201
+		if request.method == "DELETE":
+			project.remove_file(project_name,file_name,user)
+			return "",201
+		return "",400
 
 @app.route("/projects/<project_name>/files/<file_name>/lock",methods=["POST","GET"])
 def lock(project_name,file_name):

@@ -5,5 +5,10 @@
             "role": "admin"
         }
     ],
-    "locks": []
+    "locks": [
+        {
+            "file": "main.cs",
+            "user": "horst"
+        }
+    ]
 }
