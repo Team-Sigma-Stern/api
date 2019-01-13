@@ -9,7 +9,8 @@ def list_projects(user="any",role="any"):
         if not (user == "any" or has_role(project,user,role)):
             # or not Path(main.rootfolder+"Projects/"+project+"/project.json").is_file():
             projects.remove(project)
-    return projects
+    return json.dumps(projects)
+
 # hasrole
 # checks if a given user has the given role
 # returns False if the user isnt a member,
