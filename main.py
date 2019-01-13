@@ -55,7 +55,7 @@ def project_files(project_name):
 		return error_response("project not found or no Access",404)
 	return json.dumps(project.list_files(project_name)),200,{"Content-Type":"application/json"}
 
-@app.route("/projects/<project_name>/files/<file_name>",methods=["POST","GET"])
+@app.route("/projects/<project_name>/files/<file_name>",methods=["POST","GET","DELETE"])
 def file(project_name,file_name):
 	file_name= urllib.parse.unquote(file_name)
 	user = get_user(request)
@@ -67,7 +67,7 @@ def file(project_name,file_name):
 		return error_response("You cant access the project.json directly",403) 
 	if request.method == "GET":
 		return project.get_file(project_name,file_name,user), 200, {"Content-Type":"plain/text"}
-	if request.method == "POST":
+	if request.method == "POST" or request.method == "DELETE":
 		print(request.data)
 		if project.has_role(project_name,user,"guest"):
 			return error_response("You are not allowed to write",400)
@@ -76,6 +76,7 @@ def file(project_name,file_name):
 				return error_response("The File is locked by someone else",403)
 			else:
 				return error_response("You need to lock the file first",403)
+		#if request
 		project.setFile(project_name,file_name,user,request.data.decode("unicode_escape")[1:-1])
 		return "",201
 

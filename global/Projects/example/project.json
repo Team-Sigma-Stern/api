@@ -11,12 +11,12 @@
     ],
     "locks": [
         {
-            "file": "do_things.cs",
+            "file": "sub/newclass.cs",
             "user": "horst2"
         },
         {
-            "file": "sub/sub/newinterface.cs",
-            "user": "horst2"
+            "file": "do_things.cs",
+            "user": "horst"
         }
     ]
 }

@@ -18,7 +18,7 @@ This is the Backend of the online Texteditor
 
 `/projects/<project name>`<br>
 `/projects/<project name>/files` **GET**: List Files <br>
-`/projects/<project name>/files/<file name>` **GET**: Gets the content of `<file name>` **POST**: Sets the content of `<file name>` <br>
+`/projects/<project name>/files/<file name>` **GET**: Gets the content of `<file name>` **POST**: Sets the content of `<file name>`. If the file allready exists, it's need to be locked **DELETE** Deletes files, needs to be locked<br>
 `/projects/<project name>/files/<file name>/lock` **GET**: Is the file locked response:`{"locked":"You | Other | No "}`  **POST**: Locks the file <br>
 `/projects/<project name>/files/<file name>/unlock` **POST**: unlocks the file
 

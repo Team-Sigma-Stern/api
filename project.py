@@ -43,17 +43,18 @@ def list_files(project):
 def lock(project,file,user):
     if(not Path(main.rootfolder+"Projects/"+project+"/"+file).is_file()):
         return "Error: File dont Exists"
-    with open(main.rootfolder+"Projects/"+project+"/project.json",encoding="utf-8") as project_file:
-        project_conf = json.load(project_file)
-        if(check_locked(project,file)):
-            if check_locked(project,file,user):
-                return "Success: File Allreadylocked"
-            else:
-                return "Error: file Allready Locked"
-        project_conf["locks"].append({"file":file,"user":user})
     
-    with open(main.rootfolder+"Projects/"+project+"/project.json","w",encoding="utf-8") as project_file:
+    if(check_locked(project,file)):
+        if check_locked(project,file,user):
+            return "Success: File Allreadylocked"
+        else:
+            return "Error: file Allready Locked"
+    with open(main.rootfolder+"Projects/"+project+"/project.json","r+",encoding="utf-8") as project_file:
+        project_conf = json.load(project_file)
+        project_conf["locks"].append({"file":file,"user":user})
+        project_file.seek(0)
         json.dump(project_conf,project_file,indent=4)
+    #with open(main.rootfolder+"Projects/"+project+"/project.json","w",encoding="utf-8") as project_file:
     return "Success: Locked"
 
 
