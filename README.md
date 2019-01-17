@@ -1,6 +1,9 @@
 # API
 This is the Backend of the online Texteditor
-
+## Start
+``` s
+env FLASK_APP=main.py flask run -h 0.0.0.0 -p 5090090
+```
 ## Folders
 <p style="color:red;">To be Fix ed</p>
 `./global` # **root** Only for development, in production probaly some where in /usr/share
